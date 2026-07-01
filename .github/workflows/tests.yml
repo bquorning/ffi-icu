@@ -55,11 +55,9 @@ jobs:
 
       - name: Install ICU on macOS
         if: runner.os == 'macOS'
-        run: brew install icu4c
+        run: |
+          brew install icu4c
+          echo "FFI_ICU_LIB=$(brew --prefix icu4c)/lib" >> "$GITHUB_ENV"
 
       - name: Run tests
-        run: |
-          if [[ "$RUNNER_OS" == "macOS" ]]; then
-            export FFI_ICU_LIB="$(brew --prefix icu4c)/lib"
-          fi
-          bundle exec rake spec
+        run: bundle exec rake spec
